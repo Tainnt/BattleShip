@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Room</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/room.css">
+</head>
+
+<body>
+    <div id="roomModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="winorlose" style="margin-left: 38%; font-size:30px">Hướng Dẫn Chơi</h2>
+            </div>
+            <div class="modal-body">
+                <p id="soluotban" style="font-size: 40px">#Nhấn phím mũi tên Lên ↑ hoặc Xuống ↓ -- để di chuyển giữa các phòng</p>
+                <p id="soluotbantrung" style="font-size: 40px">#Nhấn OK -- để vào phòng</p>
+                <p style="font-size: 30px">Số người chơi là: số người tối đa mà phòng đó có thể chứa. Bạn có thể nhìn thấy ở góc bên phải. Game sẽ bắt đầu khi có đủ 2 người chơi.</p>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <p style="font-size: 23px; float: left;">Bạn đang đăng nhập với tên:&#160</p>
+        <p id="id_cua_toi" style="font-size: 23px; color: #7c0061"></p>
+        <button id="logout" class="btn">Thoát</button>
+    </div>
+    <div id="selectGamepad">Chọn tay cầm</div>
+    <div id="listGamepad">
+    </div>
+    <div>Chọn phòng</div>
+    <div>
+        <canvas id="room" width="800" height="500" style=" position: absolute;z-index: -1; border:5px solid #000;"> </canvas>
+        <canvas id="hieuungroom" width="800" height="500"> </canvas>
+    </div>
+    <div style="margin-top: 2%">
+        <button id="huongdanroom">Hướng Dẫn Chơi</button>
+    </div>
+    <script src="/js/room.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fighting</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/fight.css">
+</head>
+
+<body>
+    <!-- kHAI BAO GIAO DIEN BAN DO CUA PLAYER1 , PLAYER2, HIEU UNG TEN LUA, HIEU UNG CHUC MUNG 
+The canvas la the HTML dung de tao hieu ung chuyen dong theo toa do pixel-->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <span class="close">&times;</span> -->
+                <h2 id="winorlose" style="text-align: center; font-size: 100px">WIN</h2>
+            </div>
+            <!-- <div class="modal-body">
+                <p id="soluotban" style="font-size: 40px">Số lượt bắn: </p>
+                <p id="soluotbantrung" style="font-size: 40px">Số lượt bắn trúng: </p>
+            </div> -->
+            <div style="margin-top: 25%; text-align: center;">
+                <button onclick="PlayAgain()" id="playagain" class="btn" style="font-size: 30px;">PLAY AGAIN</button>
+            </div>
+        </div>
+
+    </div>
+    <div style=" padding-top: 30px">
+        <p style="font-size: 23px; float: left;padding-left: 150px;">Bạn:&#160</p>
+        <p id="id_cua_toi_1" style="font-size: 23px ; color: #337AB7;float: left;"></p>
+        <p style="font-size: 23px; padding-left: 530px;float: left;">Đối thủ:&#160</p>
+        <p id="id_cua_toi_2" style="font-size: 23px ; color: #2ecc71;"></p>
+        <!-- <button style="margin-left: 395px; clear: left">Nhấn Cancel để thoát trận</button> -->
+    </div>
+    <div>
+        <p style="font-size: 40px;margin-left: 610px" id="demo"></p>
+        <!-- <button style="float: left" id="logout" class="btn">Thoát</button> -->
+        <p style="font-size: 20px;margin-left: 580px" id="demo2"></p>
+        <button style="margin-left: 600px" id="logout" class="btn">Thoát</button>
+    </div>
+    <canvas id="player1" width="620" height="620" style="position: absolute;z-index: -1; clear: left;"></canvas>
+    <canvas id="player2" width="1260" height="620" style="position: absolute;z-index: -1;"> </canvas>
+    <canvas id="hieuungshot" width="1270" height="630" style="position: absolute;z-index: -1; border:5px solid #fff;"> </canvas>
+    <canvas id="muctieu" width="1270" height="630" style="position: absolute;z-index: -1;"> </canvas>
+    <!--KET THUC kHAI BAO GIAO DIEN BAN DO CUA PLAYER1 , PLAYER2, HIEU UNG TEN LUA, HIEU UNG CHUC MUNG-->
+
+    <!--kHAI BAO HINH ANH DE SU DUNG -->
+
+    <img id="co" src="/images/co.png" style="display: none;">
+    <img id="khongco" src="/images/khongco.jpg" style="display: none;">
+    <img id="tenlua" src="/images/tenlua.png" style="display: none;">
+    <img id="tenlua2" src="/images/tenlua2.png" style="display: none;">
+    <img id="mtco" src="/images/mtco.png" style="display: none;">
+    <img id="mtko" src="/images/mtko.png" style="display: none;">
+    <img id="chucmung" src="/images/smile.png" style="display: none;">
+    <img id="chucmayman" src="/images/sad.png" style="display: none;">
+
+    <img id="r1" src="/images/r1.png" style="display: none;">
+    <img id="r2" src="/images/r2.png" style="display: none;">
+    <img id="r3" src="/images/r3.png" style="display: none;">
+    <img id="r4" src="/images/r4.png" style="display: none;">
+
+    <img id="d2" src="/images/d2.png" style="display: none;">
+    <img id="d3" src="/images/d3.png" style="display: none;">
+    <img id="d4" src="/images/d4.png" style="display: none;">
+    <!--KET THUC KHAI BAO HINH ANH DE SU DUNG -->
+
+    <script>
+        // Lấy đối tượng Canvas
+        var canvas = document.getElementById('player1');
+        var canvas2 = document.getElementById('player2')
+
+        // Chọn đối tượng vẽ 2D
+        var context = canvas.getContext('2d');
+        var context2 = canvas2.getContext('2d');
+
+        // Khung chien dau layer1
+        CreateKhungChienDauLayer1();
+        CreateKhungChienDauLayer2();
+
+
+        function CreateKhungChienDauLayer1() {
+            context.beginPath(); // Khai báo vẽ đường thẳng mới
+            context.moveTo(10, 10); // Điểm bắt đầu
+            context.lineTo(610, 10); // Điểm kết thúc
+            context.moveTo(610, 10); // Điểm bắt đầu
+            context.lineTo(610, 610); // Điểm kết thúc
+            context.moveTo(610, 610);
+            context.lineTo(10, 610); // Điểm kết thúc
+            context.moveTo(10, 610);
+            context.lineTo(10, 10); // Điểm kết thúc
+
+            context.strokeStyle = '#337AB7'; // Màu xanh
+            context.lineWidth = 5; // rộng 15px
+            context.lineCap = 'round';
+            context.stroke(); // Tiến hành vẽ
+
+            context.moveTo(10, 70); // Điểm bắt đầu
+            context.lineTo(610, 70); // Điểm kết thúc
+            context.moveTo(10, 130); // Điểm bắt đầu
+            context.lineTo(610, 130); // Điểm kết thúc
+            context.moveTo(10, 190); // Điểm bắt đầu
+            context.lineTo(610, 190); // Điểm kết thúc
+            context.moveTo(10, 250); // Điểm bắt đầu
+            context.lineTo(610, 250); // Điểm kết thúc
+            context.moveTo(10, 310); // Điểm bắt đầu
+            context.lineTo(610, 310); // Điểm kết thúc
+            context.moveTo(10, 370); // Điểm bắt đầu
+            context.lineTo(610, 370); // Điểm kết thúc
+            context.moveTo(10, 430); // Điểm bắt đầu
+            context.lineTo(610, 430); // Điểm kết thúc
+            context.moveTo(10, 490); // Điểm bắt đầu
+            context.lineTo(610, 490); // Điểm kết thúc
+            context.moveTo(10, 550); // Điểm bắt đầu
+            context.lineTo(610, 550); // Điểm kết thúc
+
+            context.moveTo(70, 10); // Điểm bắt đầu
+            context.lineTo(70, 610); // Điểm kết thúc
+            context.moveTo(130, 10); // Điểm bắt đầu
+            context.lineTo(130, 610); // Điểm kết thúc
+            context.moveTo(190, 10); // Điểm bắt đầu
+            context.lineTo(190, 610); // Điểm kết thúc
+            context.moveTo(250, 10); // Điểm bắt đầu
+            context.lineTo(250, 610); // Điểm kết thúc
+            context.moveTo(310, 10); // Điểm bắt đầu
+            context.lineTo(310, 610); // Điểm kết thúc
+            context.moveTo(370, 10); // Điểm bắt đầu
+            context.lineTo(370, 610); // Điểm kết thúc
+            context.moveTo(430, 10); // Điểm bắt đầu
+            context.lineTo(430, 610); // Điểm kết thúc
+            context.moveTo(490, 10); // Điểm bắt đầu
+            context.lineTo(490, 610); // Điểm kết thúc
+            context.moveTo(550, 10); // Điểm bắt đầu
+            context.lineTo(550, 610); // Điểm kết thúc
+            context.strokeStyle = '#337AB7'; // Màu xanh
+            context.lineWidth = 3; // rộng 15px
+            context.lineCap = 'round';
+            context.stroke(); // Tiến hành vẽ
+        }
+        // Khung chien dau layer2
+        function CreateKhungChienDauLayer2() {
+            context2.beginPath(); // Khai báo vẽ đường thẳng mới
+            context2.moveTo(660, 10); // Điểm bắt đầu
+            context2.lineTo(1260, 10); // Điểm kết thúc
+            context2.moveTo(1260, 10); // Điểm bắt đầu
+            context2.lineTo(1260, 610); // Điểm kết thúc
+            context2.moveTo(1260, 610); // Điểm bắt đầu
+            context2.lineTo(660, 610); // Điểm kết thúc
+            context2.moveTo(660, 610); // Điểm bắt đầu
+            context2.lineTo(660, 10); // Điểm kết thúc
+
+            context2.strokeStyle = '#2ecc71'; // Màu xanh
+            context2.lineWidth = 5; // rộng 15px
+            context2.lineCap = 'round';
+            context2.stroke(); // Tiến hành vẽ
+
+            context2.moveTo(660, 70); // Điểm bắt đầu
+            context2.lineTo(1260, 70); // Điểm kết thúc
+            context2.moveTo(660, 130); // Điểm bắt đầu
+            context2.lineTo(1260, 130); // Điểm kết thúc
+            context2.moveTo(660, 190); // Điểm bắt đầu
+            context2.lineTo(1260, 190); // Điểm kết thúc
+            context2.moveTo(660, 250); // Điểm bắt đầu
+            context2.lineTo(1260, 250); // Điểm kết thúc
+            context2.moveTo(660, 310); // Điểm bắt đầu
+            context2.lineTo(1260, 310); // Điểm kết thúc
+            context2.moveTo(660, 370); // Điểm bắt đầu
+            context2.lineTo(1260, 370); // Điểm kết thúc
+            context2.moveTo(660, 430); // Điểm bắt đầu
+            context2.lineTo(1260, 430); // Điểm kết thúc
+            context2.moveTo(660, 490); // Điểm bắt đầu
+            context2.lineTo(1260, 490); // Điểm kết thúc
+            context2.moveTo(660, 550); // Điểm bắt đầu
+            context2.lineTo(1260, 550); // Điểm kết thúc
+
+            context2.moveTo(720, 10); // Điểm bắt đầu
+            context2.lineTo(720, 610); // Điểm kết thúc
+            context2.moveTo(780, 10); // Điểm bắt đầu
+            context2.lineTo(780, 610); // Điểm kết thúc
+            context2.moveTo(840, 10); // Điểm bắt đầu
+            context2.lineTo(840, 610); // Điểm kết thúc
+            context2.moveTo(900, 10); // Điểm bắt đầu
+            context2.lineTo(900, 610); // Điểm kết thúc
+            context2.moveTo(960, 10); // Điểm bắt đầu
+            context2.lineTo(960, 610); // Điểm kết thúc
+            context2.moveTo(1020, 10); // Điểm bắt đầu
+            context2.lineTo(1020, 610); // Điểm kết thúc
+            context2.moveTo(1080, 10); // Điểm bắt đầu
+            context2.lineTo(1080, 610); // Điểm kết thúc
+            context2.moveTo(1140, 10); // Điểm bắt đầu
+            context2.lineTo(1140, 610); // Điểm kết thúc
+            context2.moveTo(1200, 10); // Điểm bắt đầu
+            context2.lineTo(1200, 610); // Điểm kết thúc
+            context2.strokeStyle = '#2ecc71'; // Màu xanh
+            context2.lineWidth = 3; // rộng 15px
+            context2.lineCap = 'round';
+            context2.stroke(); // Tiến hành vẽ
+        }
+    </script>
+    <script src="/js/fight.js"></script>
+</body>
+
+</html>

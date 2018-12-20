@@ -1,0 +1,45 @@
+h1 {
+    text-transform: uppercase;
+    /*position: fixed;*/
+}
+
+body {
+    padding: 15px 50px;
+    height: 1000px;
+    background: #34495e url(/images/background.jpg) no-repeat center;
+    position: relative;
+}
+
+body h1 {
+    color: #fff;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    color: #fff;
+}
+
+#main {
+    margin-top: 150px;
+}
+
+.panel-log .panel-heading {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+#box {
+    width: auto;
+}
+
+#box h1 {
+    width: 85%;
+    display: inline-block;
+}
+
+.alert {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}

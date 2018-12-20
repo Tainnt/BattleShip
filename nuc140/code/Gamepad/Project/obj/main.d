@@ -1,0 +1,11 @@
+.\obj\main.o: main.c
+.\obj\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\obj\main.o: ..\Libary\Include\Driver\DrvUART.h
+.\obj\main.o: ..\Libary\CMSIS\CM0\DeviceSupport\Nuvoton\NUC1xx\NUC1xx.h
+.\obj\main.o: ..\Libary\CMSIS\CM0\CoreSupport\core_cm0.h
+.\obj\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\main.o: ..\Libary\CMSIS\CM0\DeviceSupport\Nuvoton\NUC1xx\system_NUC1xx.h
+.\obj\main.o: ..\Libary\Include\System\SysInfra.h
+.\obj\main.o: ..\Libary\Include\System\ModuleID.h
+.\obj\main.o: ..\Libary\Include\Driver\DrvGPIO.h
+.\obj\main.o: ..\Libary\Include\Driver\DrvSYS.h

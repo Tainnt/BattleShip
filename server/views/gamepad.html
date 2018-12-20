@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tay Cầm Ảo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+
+</head>
+
+<body>
+    <!--Form de nhap toa do test -->
+    <div class="panel-body">
+        <form id="form-test" action='' method="POST" role="form">
+            <!--<div class="form-group">
+                                    <label for="Tọa độ X">X</label>
+                                    <input type="number" class="form-control" name="toadox" id="toadox" placeholder="Nhập tọa độ X">
+                                </div>-->
+
+            <div class="form-group">
+                <label for="Text cần gửi" style="color: #fff;">Text cần gửi</label>
+                <input style="font-size: 30px" type="test" class="form-control" name="toadoy" id="textnhanduoc" placeholder="Nhập UP/Down/Left/Right/OK/Cancel">
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <button id="shot" type="button" class="btn btn-primary btn-block">P1 GỬI ĐI</button>
+                </div>
+                <div style="padding-top: 50px" class="col-md-2">
+                    <button id="shot2" type="button" class="btn btn-primary btn-block">P2 GỬI ĐI</button>
+                </div>
+            </div>
+            <div id="errors"></div>
+        </form>
+    </div>
+    </div>
+    <!-- Ket thuc Form de nhap toa do test -->
+    <script>
+        var socket = io.connect("http://doanncb.ddns.net:3000");
+        var BTNSEND = $("#shot");
+        BTNSEND.click(function() {
+            console.log("user click " + this.id);
+            TEXTDATA = $('#textnhanduoc').val();
+            socket.emit("SendTextToSerVer", {
+                DATA: TEXTDATA,
+                P: 1,
+                COOKIE: getCookie("Bantausession")
+            });
+        });
+        var BTNSEND2 = $("#shot2");
+        BTNSEND2.click(function() {
+            console.log("user click " + this.id);
+            TEXTDATA = $('#textnhanduoc').val();
+            socket.emit('SendTextToSerVer', {
+                DATA: TEXTDATA,
+                P: 2,
+                COOKIE: getCookie("Bantausession")
+            });
+        });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+
+</html>

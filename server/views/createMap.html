@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/createMap.css">
+</head>
+
+<body onload="InitPage()">
+    <div id='createModal' class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="winorlose" style="margin-left: 38%; font-size:30px">Hướng Dẫn Chơi</h2>
+            </div>
+            <div class="modal-body">
+                <p id="soluotban" style="font-size: 40px">#Cách sắp tàu:</p>
+                <p id="soluotbantrung" style="font-size: 40px">Dùng các phím điều hướng để chọn vị trí neo tàu. Nhấn OK dùng để neo tàu. Sau khi neo tàu, dùng các phím điều hướng để xếp hướng tàu. Nhấn OK lần nữa để chốt vị trí và hướng của tàu và tiếp tục với chiếc tàu tiếp theo.</p>
+                <p style="font-size: 40px">#Khi muốn xóa tàu đã được sắp, chọn tàu và nhấn CANCEL.</p>
+                <p style="font-size: 40px">#Sau khi hoàn thành sắp xếp tàu, chọn Sẵn sàng để chuẩn bị bắt đầu game.</p>
+                <p style="font-size: 30px">Game chỉ bắt đầu khi 2 người chơi cùng sẵn sàng.</p>
+            </div>
+        </div>
+
+    </div>
+    <div style="padding-top: 30px">
+        <p style="font-size: 23px; float: left;">Bạn đang đăng nhập với tên:&#160</p>
+        <p id="id_cua_toi" style="font-size: 23px ; color: #7c0061; float: left"></p>
+
+        <p style="font-size: 23px; float: left; padding-left: 500px">Đối đầu với:&#160</p>
+        <p id="id_cua_doi_thu" style="font-size: 23px ; color: #FF0000;"></p>
+        <button id="logout" style="clear: left;" class="btn">Thoát</button>
+    </div>
+    <!-- kHAI BAO GIAO DIEN BAN DO CUA PLAYER1 , PLAYER2, HIEU UNG TEN LUA, HIEU UNG CHUC MUNG 
+The canvas la the HTML dung de tao hieu ung chuyen dong theo toa do pixel-->
+
+    <canvas id="player1" width="620" height="620" style="position: absolute;z-index: -1; clear: left;"></canvas>
+    <canvas id="muctieu" width="1270" height="630" style="position: absolute;z-index: -1;"> </canvas>
+    <div id="ShipInfo">
+        <div>
+            <span class="badge" id="ship4Info">0</span>
+            <img id="ship4" src="/images/r4.png">
+        </div>
+        <div>
+            <span class="badge" id="ship3Info">0</span>
+            <img id="ship3" src="/images/r3.png">
+        </div>
+        <div>
+            <span class="badge" id="ship2Info">0</span>
+            <img id="ship2" src="/images/r2.png">
+        </div>
+        <div> <span class="badge" id="ship1Info">0</span>
+            <img id="ship1" src="/images/r1.png">
+        </div>
+        <div>
+            <button id="btn" type="button" class="btn btn-primary btn-block" disabled>Sẵn sàng</button>
+        </div>
+    </div>
+    <div style="margin-top: 45%">
+        <button id='huongdancreate'>Hướng Dẫn Chơi</button>
+    </div>
+    <!--kHAI BAO HINH ANH DE SU DUNG -->
+    <img id="pointer" src="/images/mtco.png" style="display: none;">
+    <img id="error" src="/images/mtko.png" style="display: none;">
+
+    <img id="r1" src="/images/r1.png" style="display: none;">
+    <img id="r2" src="/images/r2.png" style="display: none;">
+    <img id="r3" src="/images/r3.png" style="display: none;">
+    <img id="r4" src="/images/r4.png" style="display: none;">
+
+    <img id="d2" src="/images/d2.png" style="display: none;">
+    <img id="d3" src="/images/d3.png" style="display: none;">
+    <img id="d4" src="/images/d4.png" style="display: none;">
+
+    <script>
+        // Lấy đối tượng Canvas
+        var canvas = document.getElementById('player1');
+
+        // Chọn đối tượng vẽ 2D
+        var context = canvas.getContext('2d');
+
+        // Khung chien dau layer1
+        CreateMapLine();
+
+        function CreateMapLine() {
+            context.beginPath(); // Khai báo vẽ đường thẳng mới
+            context.moveTo(10, 10); // Điểm bắt đầu
+            context.lineTo(610, 10); // Điểm kết thúc
+            context.moveTo(610, 10); // Điểm bắt đầu
+            context.lineTo(610, 610); // Điểm kết thúc
+            context.moveTo(610, 610);
+            context.lineTo(10, 610); // Điểm kết thúc
+            context.moveTo(10, 610);
+            context.lineTo(10, 10); // Điểm kết thúc
+
+            context.strokeStyle = '#337AB7'; // Màu xanh
+            context.lineWidth = 5; // rộng 15px
+            context.lineCap = 'round';
+            context.stroke(); // Tiến hành vẽ
+
+            context.moveTo(10, 70); // Điểm bắt đầu
+            context.lineTo(610, 70); // Điểm kết thúc
+            context.moveTo(10, 130); // Điểm bắt đầu
+            context.lineTo(610, 130); // Điểm kết thúc
+            context.moveTo(10, 190); // Điểm bắt đầu
+            context.lineTo(610, 190); // Điểm kết thúc
+            context.moveTo(10, 250); // Điểm bắt đầu
+            context.lineTo(610, 250); // Điểm kết thúc
+            context.moveTo(10, 310); // Điểm bắt đầu
+            context.lineTo(610, 310); // Điểm kết thúc
+            context.moveTo(10, 370); // Điểm bắt đầu
+            context.lineTo(610, 370); // Điểm kết thúc
+            context.moveTo(10, 430); // Điểm bắt đầu
+            context.lineTo(610, 430); // Điểm kết thúc
+            context.moveTo(10, 490); // Điểm bắt đầu
+            context.lineTo(610, 490); // Điểm kết thúc
+            context.moveTo(10, 550); // Điểm bắt đầu
+            context.lineTo(610, 550); // Điểm kết thúc
+
+            context.moveTo(70, 10); // Điểm bắt đầu
+            context.lineTo(70, 610); // Điểm kết thúc
+            context.moveTo(130, 10); // Điểm bắt đầu
+            context.lineTo(130, 610); // Điểm kết thúc
+            context.moveTo(190, 10); // Điểm bắt đầu
+            context.lineTo(190, 610); // Điểm kết thúc
+            context.moveTo(250, 10); // Điểm bắt đầu
+            context.lineTo(250, 610); // Điểm kết thúc
+            context.moveTo(310, 10); // Điểm bắt đầu
+            context.lineTo(310, 610); // Điểm kết thúc
+            context.moveTo(370, 10); // Điểm bắt đầu
+            context.lineTo(370, 610); // Điểm kết thúc
+            context.moveTo(430, 10); // Điểm bắt đầu
+            context.lineTo(430, 610); // Điểm kết thúc
+            context.moveTo(490, 10); // Điểm bắt đầu
+            context.lineTo(490, 610); // Điểm kết thúc
+            context.moveTo(550, 10); // Điểm bắt đầu
+            context.lineTo(550, 610); // Điểm kết thúc
+            context.strokeStyle = '#337AB7'; // Màu xanh
+            context.lineWidth = 3; // rộng 15px
+            context.lineCap = 'round';
+            context.stroke(); // Tiến hành vẽ
+        }
+    </script>
+    <script src="/js/createMap.js"></script>
+</body>
+
+</html>
